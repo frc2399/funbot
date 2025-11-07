@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -26,6 +29,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    DataLogManager.start();
   }
 
   /**
@@ -73,7 +77,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putNumber(("joysticklefty"), m_robotContainer.commandxboxcontroller.getLeftY());
+    SmartDashboard.putNumber(("joystickleftx"), m_robotContainer.commandxboxcontroller.getLeftX());
+    SmartDashboard.putNumber(("joystickrighty"), m_robotContainer.commandxboxcontroller.getRightY());
+    SmartDashboard.putNumber(("joystickrightx"), m_robotContainer.commandxboxcontroller.getRightX());
+  }
 
   @Override
   public void testInit() {

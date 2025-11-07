@@ -22,7 +22,7 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
-  private final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
+  public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
   private final Subsystem[] emptySubsystemArray = new Subsystem[0]; 
   /*added array bc the code did not repeat the action when it was set to null. 
   /*it fixed it bc it told the code that there was nothing there.
