@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -20,18 +22,25 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
 
+  private static final CommandXboxController driverController = new CommandXboxController(0);
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() { 
     setUpDefaultCommands();
     setUpDriverButtonBindings();
     setUpOperatorButtonBindings();
   }
+
+  
  
   private void setUpDefaultCommands() {
+    Commands.setUpDefaultCommands(returnSupplierInputs(supplierOne, supplierTwo));
 
   }
  
   private void setUpDriverButtonBindings() {
+    driverController.a().onTrue(Commands.print("yay we did it"));
 
   }
   
