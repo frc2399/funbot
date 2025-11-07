@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -19,7 +22,10 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
-
+  private final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
+  private final Subsystem[] emptySubsystemArray = new Subsystem[0]; 
+  /*added array bc the code did not repeat the action when it was set to null. 
+  /*it fixed it bc it told the code that there was nothing there.
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() { 
     setUpDefaultCommands();
@@ -32,10 +38,15 @@ public class RobotContainer {
   }
  
   private void setUpDriverButtonBindings() {
-
+    commandxboxcontroller.a().whileTrue(printyay());
   }
   
+  private Command printyay() {
+    return Commands.run(() -> System.out.println("yay we did it"), emptySubsystemArray);
+  }
+
   private void setUpOperatorButtonBindings() {
 
   }
+
 }
