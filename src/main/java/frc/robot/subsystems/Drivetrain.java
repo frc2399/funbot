@@ -18,8 +18,8 @@ public class Drivetrain extends SubsystemBase {
     private SparkMax rightBack = new SparkMax (4, SparkLowLevel.MotorType.kBrushless);
     private SparkMax leftBack = new SparkMax (2, SparkLowLevel.MotorType.kBrushless);
     
-    private final SparkClosedLoopController motorClosedLoopController;
-    private final SparkClosedLoopController motorClosedLoopController2;
+    private final SparkClosedLoopController motorRightClosedLoopController;
+    private final SparkClosedLoopController motorLeftClosedLoopController;
 
     private final double ENCODER_POSITION_FACTOR = 8 * Math.PI * (10./52.) * (30./68.);
     private final double ENCODER_VELOCITY_FACTOR = (8 * Math.PI * (10./52.) * (30./68.)) / 60.0;
@@ -82,17 +82,17 @@ public class Drivetrain extends SubsystemBase {
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-    motorClosedLoopController = rightFront.getClosedLoopController();
-    motorClosedLoopController2 = leftFront.getClosedLoopController();
+    motorRightClosedLoopController = rightFront.getClosedLoopController();
+    motorLeftClosedLoopController = leftFront.getClosedLoopController();
 
     }
 
     public void setRightSpeed(LinearVelocity speed) {
-        motorClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
+        motorRightClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
 
     public void setLeftSpeed(LinearVelocity speed) {
-        motorClosedLoopController2.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
+        motorLeftClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
     
 }
