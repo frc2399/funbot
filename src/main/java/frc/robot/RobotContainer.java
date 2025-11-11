@@ -4,11 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Drivetrain;
 
 
@@ -35,7 +32,7 @@ public class RobotContainer {
   
  
   private void setUpDefaultCommands() {
-    Commands.setUpDefaultCommands(returnSupplierInputs(supplierOne, supplierTwo));
+    // Commands.setUpDefaultCommands(returnSupplierInputs(supplierOne, supplierTwo)); 
 
   }
  

@@ -1,19 +1,15 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
-
-import static edu.wpi.first.units.Units.InchesPerSecond;
-
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -24,6 +20,9 @@ public class Drivetrain extends SubsystemBase {
     
     private final SparkClosedLoopController motorClosedLoopController;
     private final SparkClosedLoopController motorClosedLoopController2;
+
+    private final double ENCODER_POSITION_FACTOR = 8 * Math.PI * (10./52.) * (30./68.);
+    private final double ENCODER_VELOCITY_FACTOR = (8 * Math.PI * (10./52.) * (30./68.)) / 60.0;
     
 
     public Drivetrain() {
@@ -49,6 +48,19 @@ public class Drivetrain extends SubsystemBase {
         leftFrontConfig.smartCurrentLimit(50);
         rightBackConfig.smartCurrentLimit(50);
         leftBackConfig.smartCurrentLimit(50);
+
+
+        rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
+        leftFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
+        rightBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
+        leftBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
+
+        rightFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+        leftFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+        rightBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+        leftBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+
+
 
         rightFront.configure(
             rightFrontConfig,
@@ -76,11 +88,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setRightSpeed(LinearVelocity speed) {
-        motorClosedLoopController.setReference(speed.in(InchesPerSecond), ControlType.kVelocity);
+        motorClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
 
     public void setLeftSpeed(LinearVelocity speed) {
-        motorClosedLoopController2.setReference(speed.in(InchesPerSecond), ControlType.kVelocity);
+        motorClosedLoopController2.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
     
 }
