@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -9,6 +11,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,8 +24,11 @@ public class Drivetrain extends SubsystemBase {
     private final SparkClosedLoopController motorRightClosedLoopController;
     private final SparkClosedLoopController motorLeftClosedLoopController;
 
-    private final double ENCODER_POSITION_FACTOR = 8 * Math.PI * (10./52.) * (30./68.);
-    private final double ENCODER_VELOCITY_FACTOR = (8 * Math.PI * (10./52.) * (30./68.)) / 60.0;
+    private final Distance ENCODER_POSITION_FACTOR = Inches.of(8 * Math.PI * (10./52.) * (30./68.));
+    private final Distance ENCODER_VELOCITY_FACTOR = Inches.of((8 * Math.PI * (10./52.) * (30./68.)) / 60.0); //inches per rotation
+
+    private final double drivetrainP = 0.08;
+
     
 
     public Drivetrain() {
@@ -38,8 +44,8 @@ public class Drivetrain extends SubsystemBase {
 
         rightFrontConfig.inverted(false);
         rightBackConfig.inverted(false);
-        leftFrontConfig.inverted(false);
-        leftBackConfig.inverted(false);
+        leftFrontConfig.inverted(true);
+        leftBackConfig.inverted(true);
 
         rightBackConfig.follow(rightFront,false);
         leftBackConfig.follow(leftFront,false);
@@ -50,15 +56,20 @@ public class Drivetrain extends SubsystemBase {
         leftBackConfig.smartCurrentLimit(50);
 
 
-        rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
-        leftFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
-        rightBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
-        leftBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR);
+        rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
+        leftFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
+        rightBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
+        leftBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
 
-        rightFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
-        leftFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
-        rightBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
-        leftBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+        rightFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR.in(Meters));
+        leftFrontConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR.in(Meters));
+        rightBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR.in(Meters));
+        leftBackConfig.encoder.velocityConversionFactor(ENCODER_VELOCITY_FACTOR.in(Meters));
+
+        rightFrontConfig.closedLoop.p(drivetrainP);
+        leftFrontConfig.closedLoop.p(drivetrainP);
+        rightBackConfig.closedLoop.p(drivetrainP);
+        leftBackConfig.closedLoop.p(drivetrainP);
 
 
 

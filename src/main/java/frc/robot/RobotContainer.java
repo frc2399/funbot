@@ -41,16 +41,25 @@ public class RobotContainer {
       () ->{
         drivetrain.setLeftSpeed(MetersPerSecond.of(commandxboxcontroller.getLeftY() * MAX_SPEED_METERS_PER_SECOND));
         drivetrain.setRightSpeed(MetersPerSecond.of(commandxboxcontroller.getRightY() * MAX_SPEED_METERS_PER_SECOND));
-      }
-    );
-      , drivetrain);
+        //drivetrain.setLeftSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
+        //drivetrain.setRightSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
+        System.out.println("yay we did it");
+  }
+      
+    , drivetrain)
+      );
+      
     
   }
  
   private void setUpDriverButtonBindings() {
     commandxboxcontroller.a().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
+    commandxboxcontroller.b().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
   }
 
+  
+
+  
   private void setUpOperatorButtonBindings() {
 
   }
