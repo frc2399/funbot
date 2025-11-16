@@ -23,9 +23,15 @@ public class Drivetrain extends SubsystemBase {
     
     private final SparkClosedLoopController motorRightClosedLoopController;
     private final SparkClosedLoopController motorLeftClosedLoopController;
-
+ 
+    /* 8 inches for diameter of wheel
+    multiplied by pi to get circumference
+    10/52 is the gear ratio for the motor gear and gear it's connected to
+    30/68 is the gear ratio for the last two gears */
     private final Distance ENCODER_POSITION_FACTOR = Inches.of(8 * Math.PI * (10./52.) * (30./68.));
-    private final Distance ENCODER_VELOCITY_FACTOR = Inches.of((8 * Math.PI * (10./52.) * (30./68.)) / 60.0); //inches per rotation
+   
+    //distance divided by 60 to get velocity in inches per rotations
+    private final Distance ENCODER_VELOCITY_FACTOR = Inches.of(ENCODER_POSITION_FACTOR.in(Inches) / 60.0);
 
     private final double drivetrainP = 0.08;
 
