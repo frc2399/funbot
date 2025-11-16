@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
@@ -13,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -29,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final double drivetrainP = 0.08;
 
-    
+    private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
 
     public Drivetrain() {
         SparkMaxConfig rightFrontConfig = new SparkMaxConfig();
@@ -105,7 +108,12 @@ public class Drivetrain extends SubsystemBase {
     public void setLeftSpeed(LinearVelocity speed) {
         motorLeftClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
-    
+    public Command tankDrive(DoubleSupplier rightSpeed, DoubleSupplier leftSpeed) {
+        return this.run(()->{
+            setLeftSpeed((MetersPerSecond.of(leftSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+            setRightSpeed((MetersPerSecond.of(rightSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+        } );
+    }
 }
 
 
