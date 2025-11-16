@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -14,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.MotorConstants;
 
 public class Drivetrain extends SubsystemBase {
     private SparkMax rightFront = new SparkMax (3, SparkLowLevel.MotorType.kBrushless);
@@ -50,10 +52,10 @@ public class Drivetrain extends SubsystemBase {
         rightBackConfig.follow(rightFront,false);
         leftBackConfig.follow(leftFront,false);
 
-        rightFrontConfig.smartCurrentLimit(50);
-        leftFrontConfig.smartCurrentLimit(50);
-        rightBackConfig.smartCurrentLimit(50);
-        leftBackConfig.smartCurrentLimit(50);
+        rightFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        leftFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        rightBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        leftBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
 
 
         rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
