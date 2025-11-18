@@ -31,8 +31,6 @@ public class Drivetrain extends SubsystemBase {
 
     private final double drivetrainP = 0.08;
 
-    
-
     public Drivetrain() {
         SparkMaxConfig rightFrontConfig = new SparkMaxConfig();
         SparkMaxConfig leftFrontConfig = new SparkMaxConfig();
@@ -57,7 +55,6 @@ public class Drivetrain extends SubsystemBase {
         rightBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
         leftBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
 
-
         rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
         leftFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
         rightBackConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
@@ -72,8 +69,6 @@ public class Drivetrain extends SubsystemBase {
         leftFrontConfig.closedLoop.p(drivetrainP);
         rightBackConfig.closedLoop.p(drivetrainP);
         leftBackConfig.closedLoop.p(drivetrainP);
-
-
 
         rightFront.configure(
             rightFrontConfig,
@@ -97,7 +92,6 @@ public class Drivetrain extends SubsystemBase {
 
     motorRightClosedLoopController = rightFront.getClosedLoopController();
     motorLeftClosedLoopController = leftFront.getClosedLoopController();
-
     }
 
     public void setRightSpeed(LinearVelocity speed) {
