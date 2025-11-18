@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorIdConstants;
 import frc.robot.Constants.MotorIdConstants.MotorConstants;
 
+
+
 public class Drivetrain extends SubsystemBase {
     private SparkMax rightFrontMotorController = new SparkMax(MotorIdConstants.RIGHT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
     private SparkMax leftFrontMotorController = new SparkMax(MotorIdConstants.LEFT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
@@ -29,9 +31,19 @@ public class Drivetrain extends SubsystemBase {
     
     private final SparkClosedLoopController motorRightClosedLoopController;
     private final SparkClosedLoopController motorLeftClosedLoopController;
-
-    private final Distance ENCODER_POSITION_FACTOR = Inches.of(8 * Math.PI * (10./52.) * (30./68.));
-    private final Distance ENCODER_VELOCITY_FACTOR = Inches.of((8 * Math.PI * (10./52.) * (30./68.)) / 60.0); //inches per rotation
+ 
+    /* 8 inches for diameter of wheel
+    multiplied by pi to get circumference
+    10/52 is the gear ratio for the motor gear and gear it's connected to
+    30/68 is the gear ratio for the last two gears */
+    private final double WHEEL_CIRCUMFERENCE = 8 * Math.PI;
+    private final double MOTOR_GEAR_REDUCTION = (10./52.);
+    private final double FINAL_TWO_GEAR_REDUCTION = (30./68.);
+    
+    private final Distance ENCODER_POSITION_FACTOR = Inches.of(WHEEL_CIRCUMFERENCE * MOTOR_GEAR_REDUCTION * FINAL_TWO_GEAR_REDUCTION);
+   
+    //distance divided by 60 to get velocity in inches per second
+    private final Distance ENCODER_VELOCITY_FACTOR = Inches.of(ENCODER_POSITION_FACTOR.in(Inches)).divide(60);
 
     private final double drivetrainP = 0.08;
 
