@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -13,13 +16,16 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.MotorIdConstants;
+import frc.robot.Constants.MotorIdConstants.MotorConstants;
 
 public class Drivetrain extends SubsystemBase {
-    private SparkMax rightFront = new SparkMax (3, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax leftFront = new SparkMax (1, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax rightBack = new SparkMax (4, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax leftBack = new SparkMax (2, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax rightFrontMotorController = new SparkMax(MotorIdConstants.RIGHT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax leftFrontMotorController = new SparkMax(MotorIdConstants.LEFT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax rightBackMotorController = new SparkMax(MotorIdConstants.RIGHT_BACK_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax leftBackMotorController = new SparkMax(MotorIdConstants.LEFT_BACK_ID, SparkLowLevel.MotorType.kBrushless);
     
     private final SparkClosedLoopController motorRightClosedLoopController;
     private final SparkClosedLoopController motorLeftClosedLoopController;
@@ -29,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final double drivetrainP = 0.08;
 
-    
+    private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
 
     public Drivetrain() {
         SparkMaxConfig rightFrontConfig = new SparkMaxConfig();
@@ -47,13 +53,13 @@ public class Drivetrain extends SubsystemBase {
         leftFrontConfig.inverted(true);
         leftBackConfig.inverted(true);
 
-        rightBackConfig.follow(rightFront,false);
-        leftBackConfig.follow(leftFront,false);
+        rightBackConfig.follow(rightFrontMotorController,false);
+        leftBackConfig.follow(leftFrontMotorController,false);
 
-        rightFrontConfig.smartCurrentLimit(50);
-        leftFrontConfig.smartCurrentLimit(50);
-        rightBackConfig.smartCurrentLimit(50);
-        leftBackConfig.smartCurrentLimit(50);
+        rightFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        leftFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        rightBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
+        leftBackConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
 
 
         rightFrontConfig.encoder.positionConversionFactor(ENCODER_POSITION_FACTOR.in(Meters));
@@ -73,28 +79,28 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-        rightFront.configure(
+        rightFrontMotorController.configure(
             rightFrontConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        leftFront.configure(
+        leftFrontMotorController.configure(
             leftFrontConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        rightBack.configure(
+        rightBackMotorController.configure(
             rightBackConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        leftBack.configure(
+        leftBackMotorController.configure(
             leftBackConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-    motorRightClosedLoopController = rightFront.getClosedLoopController();
-    motorLeftClosedLoopController = leftFront.getClosedLoopController();
+    motorRightClosedLoopController = rightFrontMotorController.getClosedLoopController();
+    motorLeftClosedLoopController = leftFrontMotorController.getClosedLoopController();
 
     }
 
@@ -105,7 +111,12 @@ public class Drivetrain extends SubsystemBase {
     public void setLeftSpeed(LinearVelocity speed) {
         motorLeftClosedLoopController.setReference(speed.in(MetersPerSecond), ControlType.kVelocity);
     }
-    
+    public Command tankDrive(DoubleSupplier rightSpeed, DoubleSupplier leftSpeed) {
+        return this.run(()->{
+            setLeftSpeed((MetersPerSecond.of(leftSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+            setRightSpeed((MetersPerSecond.of(rightSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+        } );
+    }
 }
 
 

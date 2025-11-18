@@ -25,7 +25,6 @@ public class RobotContainer {
   public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
   public final CommandXboxController operatorXboxController = new CommandXboxController(1);
 
-  private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
   /*added array bc the code did not repeat the action when it was set to null. 
   /*it fixed it bc it told the code that there was nothing there.
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -38,17 +37,9 @@ public class RobotContainer {
   
  
   private void setUpDefaultCommands() {
-    drivetrain.setDefaultCommand(Commands.run(
-      () ->{
-        drivetrain.setLeftSpeed(MetersPerSecond.of(commandxboxcontroller.getLeftY() * MAX_SPEED_METERS_PER_SECOND));
-        drivetrain.setRightSpeed(MetersPerSecond.of(commandxboxcontroller.getRightY() * MAX_SPEED_METERS_PER_SECOND));
-        //drivetrain.setLeftSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
-        //drivetrain.setRightSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
-        System.out.println("yay we did it");
-  }
-      
-    , drivetrain)
-      );
+    drivetrain.setDefaultCommand(
+      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY())
+    );
       
     
   }
