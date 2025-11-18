@@ -15,13 +15,14 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.MotorIdConstants;
+import frc.robot.Constants.MotorIdConstants.MotorConstants;
 
 public class Drivetrain extends SubsystemBase {
-    private SparkMax rightFront = new SparkMax (3, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax leftFront = new SparkMax (1, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax rightBack = new SparkMax (4, SparkLowLevel.MotorType.kBrushless);
-    private SparkMax leftBack = new SparkMax (2, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax rightFrontMotorController = new SparkMax(MotorIdConstants.RIGHT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax leftFrontMotorController = new SparkMax(MotorIdConstants.LEFT_FRONT_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax rightBackMotorController = new SparkMax(MotorIdConstants.RIGHT_BACK_ID, SparkLowLevel.MotorType.kBrushless);
+    private SparkMax leftBackMotorController = new SparkMax(MotorIdConstants.LEFT_BACK_ID, SparkLowLevel.MotorType.kBrushless);
     
     private final SparkClosedLoopController motorRightClosedLoopController;
     private final SparkClosedLoopController motorLeftClosedLoopController;
@@ -49,8 +50,8 @@ public class Drivetrain extends SubsystemBase {
         leftFrontConfig.inverted(true);
         leftBackConfig.inverted(true);
 
-        rightBackConfig.follow(rightFront,false);
-        leftBackConfig.follow(leftFront,false);
+        rightBackConfig.follow(rightFrontMotorController,false);
+        leftBackConfig.follow(leftFrontMotorController,false);
 
         rightFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
         leftFrontConfig.smartCurrentLimit((int) MotorConstants.NEO_CURRENT_LIMIT.in(Amps));
@@ -75,28 +76,28 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-        rightFront.configure(
+        rightFrontMotorController.configure(
             rightFrontConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        leftFront.configure(
+        leftFrontMotorController.configure(
             leftFrontConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        rightBack.configure(
+        rightBackMotorController.configure(
             rightBackConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-        leftBack.configure(
+        leftBackMotorController.configure(
             leftBackConfig,
             SparkMax.ResetMode.kResetSafeParameters,
             SparkMax.PersistMode.kPersistParameters);
 
-    motorRightClosedLoopController = rightFront.getClosedLoopController();
-    motorLeftClosedLoopController = leftFront.getClosedLoopController();
+    motorRightClosedLoopController = rightFrontMotorController.getClosedLoopController();
+    motorLeftClosedLoopController = leftFrontMotorController.getClosedLoopController();
 
     }
 
