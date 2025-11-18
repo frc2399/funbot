@@ -22,7 +22,7 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
-  public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
+  private final CommandXboxController commandxboxdrivecontroller = new CommandXboxController(0);
 
   private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
   /*added array bc the code did not repeat the action when it was set to null. 
@@ -39,8 +39,8 @@ public class RobotContainer {
   private void setUpDefaultCommands() {
     drivetrain.setDefaultCommand(Commands.run(
       () ->{
-        drivetrain.setLeftSpeed(MetersPerSecond.of(commandxboxcontroller.getLeftY() * MAX_SPEED_METERS_PER_SECOND));
-        drivetrain.setRightSpeed(MetersPerSecond.of(commandxboxcontroller.getRightY() * MAX_SPEED_METERS_PER_SECOND));
+        drivetrain.setLeftSpeed(MetersPerSecond.of(commandxboxdrivecontroller.getLeftY() * MAX_SPEED_METERS_PER_SECOND));
+        drivetrain.setRightSpeed(MetersPerSecond.of(commandxboxdrivecontroller.getRightY() * MAX_SPEED_METERS_PER_SECOND));
         //drivetrain.setLeftSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
         //drivetrain.setRightSpeed(MetersPerSecond.of(MAX_SPEED_METERS_PER_SECOND));
         System.out.println("yay we did it");
@@ -53,8 +53,8 @@ public class RobotContainer {
   }
  
   private void setUpDriverButtonBindings() {
-    commandxboxcontroller.a().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
-    commandxboxcontroller.b().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
+    commandxboxdrivecontroller.a().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
+    commandxboxdrivecontroller.b().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
   }
 
   
