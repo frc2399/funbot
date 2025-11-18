@@ -75,15 +75,6 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {
-    SmartDashboard.putNumber(("joysticklefty"), m_robotContainer.commandxboxcontroller.getLeftY());
-    SmartDashboard.putNumber(("joystickleftx"), m_robotContainer.commandxboxcontroller.getLeftX());
-    SmartDashboard.putNumber(("joystickrighty"), m_robotContainer.commandxboxcontroller.getRightY());
-    SmartDashboard.putNumber(("joystickrightx"), m_robotContainer.commandxboxcontroller.getRightX());
-  }
-
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
