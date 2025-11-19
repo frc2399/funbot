@@ -24,8 +24,6 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
 
-  private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() { 
     setUpDefaultCommands();
     setUpDriverButtonBindings();
@@ -35,15 +33,9 @@ public class RobotContainer {
   
  
   private void setUpDefaultCommands() {
-    drivetrain.setDefaultCommand(Commands.run(
-      () ->{
-        drivetrain.setLeftSpeed(MetersPerSecond.of(commandxboxcontroller.getLeftY() * MAX_SPEED_METERS_PER_SECOND));
-        drivetrain.setRightSpeed(MetersPerSecond.of(commandxboxcontroller.getRightY() * MAX_SPEED_METERS_PER_SECOND));
-        System.out.println("yay we did it");
-  }
-      
-    , drivetrain)
-      );
+    drivetrain.setDefaultCommand(
+      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY())
+    );
       
     
   }
