@@ -23,6 +23,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
   public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
+  public final CommandXboxController operatorXboxController = new CommandXboxController(1);
 
   /*added array bc the code did not repeat the action when it was set to null. 
   /*it fixed it bc it told the code that there was nothing there.
@@ -37,14 +38,13 @@ public class RobotContainer {
  
   private void setUpDefaultCommands() {
     drivetrain.setDefaultCommand(
-      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY())
+      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY(), () -> operatorXboxController.rightTrigger().getAsBoolean())
     );
       
     
   }
  
   private void setUpDriverButtonBindings() {
-    commandxboxcontroller.a().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
     commandxboxcontroller.b().whileTrue(Commands.run(() -> System.out.println("yay we did it")));
   }
 
@@ -52,7 +52,7 @@ public class RobotContainer {
 
   
   private void setUpOperatorButtonBindings() {
-
+    operatorXboxController.a().onTrue(Commands.none()).onFalse(Commands.none());
   }
 
 }
