@@ -16,6 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorIdConstants;
@@ -37,6 +38,8 @@ public class Drivetrain extends SubsystemBase {
 
     private final double MAX_SPEED_METERS_PER_SECOND = 4.0;
 
+    private final DifferentialDrive drive;
+    
     public Drivetrain() {
         SparkMaxConfig rightFrontConfig = new SparkMaxConfig();
         SparkMaxConfig leftFrontConfig = new SparkMaxConfig();
@@ -102,6 +105,7 @@ public class Drivetrain extends SubsystemBase {
     motorRightClosedLoopController = rightFrontMotorController.getClosedLoopController();
     motorLeftClosedLoopController = leftFrontMotorController.getClosedLoopController();
 
+    drive = new DifferentialDrive(leftFrontMotorController, rightFrontMotorController);
     }
 
     public void setRightSpeed(LinearVelocity speed) {
@@ -113,8 +117,14 @@ public class Drivetrain extends SubsystemBase {
     }
     public Command tankDrive(DoubleSupplier rightSpeed, DoubleSupplier leftSpeed) {
         return this.run(()->{
-            setLeftSpeed((MetersPerSecond.of(leftSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
-            setRightSpeed((MetersPerSecond.of(rightSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+                setLeftSpeed((MetersPerSecond.of(leftSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+                setRightSpeed((MetersPerSecond.of(rightSpeed.getAsDouble() * MAX_SPEED_METERS_PER_SECOND)));
+        } );
+    }
+
+    public Command arcadeDrive(DoubleSupplier xSpeed, DoubleSupplier zRotation) {
+        return this.run(()->{
+                drive.arcadeDrive(xSpeed.getAsDouble(), zRotation.getAsDouble());
         } );
     }
 }
