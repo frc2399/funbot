@@ -38,7 +38,7 @@ public class RobotContainer {
  
   private void setUpDefaultCommands() {
     drivetrain.setDefaultCommand(
-      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY())
+      drivetrain.tankDrive(() -> commandxboxcontroller.getRightY(), () -> commandxboxcontroller.getLeftY(), () -> operatorXboxController.rightTrigger().getAsBoolean())
     );
       
     
