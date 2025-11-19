@@ -24,9 +24,6 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   public final CommandXboxController commandxboxcontroller = new CommandXboxController(0);
 
-  /*added array bc the code did not repeat the action when it was set to null. 
-  /*it fixed it bc it told the code that there was nothing there.
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() { 
     setUpDefaultCommands();
     setUpDriverButtonBindings();
